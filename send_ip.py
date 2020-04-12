@@ -21,7 +21,29 @@ def ipify():
     return res.decode()
 
 def main():
-    msg = f'blah\nblah'
+    msg = ""
+    
+    try:
+        msg += f"ip4only: {ip4only()}"
+        msg += "\n"
+    except:
+        msg += "ip4only failed"
+        msg += "\n"
+
+    try:
+        msg += f"myip: {myip()}"
+        msg += "\n"
+    except:
+        msg += "myip failed"
+        msg += "\n"
+
+    try:
+        msg += f"ipify: {ipify()}"
+        msg += "\n"
+    except:
+        msg += "ipify failed"
+        msg += "\n"
+
     print(msg)
 
 
