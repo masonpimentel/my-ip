@@ -1,5 +1,6 @@
 from oauth2client import file, client, tools
 from googleapiclient.discovery import build
+import argparse
 
 def main():
     parser = argparse.ArgumentParser(parents=[tools.argparser])
@@ -9,8 +10,7 @@ def main():
     if not creds or creds.invalid:
         flow = client.flow_from_clientsecrets("credentials.json", "https://www.googleapis.com/auth/gmail.send")
         flags = parser.parse_args()
-        creds = tools.run_flow(flow, store, flags)
-        build('gmail', 'v1', http=creds.authorize(Http()))
+        tools.run_flow(flow, store, flags)
     else:
         print("Token already exists!")
 
