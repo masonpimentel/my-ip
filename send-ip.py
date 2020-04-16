@@ -1,9 +1,11 @@
+from apiclient import errors
 import urllib.request
 import json
 import base64
 from email.message import EmailMessage
 from oauth2client import file, client, tools
 from googleapiclient.discovery import build
+from httplib2 import Http
 
 def get_config():
     with open("config.json") as config_file:
@@ -53,22 +55,22 @@ def main():
         msg += "\n"
 
     email_msg = EmailMessage()
-    email_msg['From'] = config_get_sender_gmail()
+    email_msg['From'] = get_config()["from_email"]
     email_msg['To'] = get_config()["target_email"]
     email_msg['Subject'] = get_config()["email_subject"]
     email_msg.set_content(msg)
-    email_msg = {'raw': base64.urlsafe_b64encode(msg.as_string().encode()).decode()}
+    email_msg = {'raw': base64.urlsafe_b64encode(email_msg.as_string().encode()).decode()}
 
     store = file.Storage('token.json')
     creds = store.get()
     service = build('gmail', 'v1', http=creds.authorize(Http()))
 
     try:
-        message = (service.users().messages().send(userId='me', body=msg).execute())
-        print(f'Sending message ID: {message['id']}'
+        message = (service.users().messages().send(userId='me', body=email_msg).execute())
+        print(f'Sending message ID: {message["id"]}')
     except errors.HttpError as e:
-        print(f'An error occurred: {e}')
-        raise e
+        print(f'An error occurred')
+        print(e)
 
 if __name__ == '__main__':
     main()
