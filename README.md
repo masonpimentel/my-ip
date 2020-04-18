@@ -8,6 +8,12 @@ The purpose of this is to serve as an alternative to DDNS clients.
 ------------ | 
 _Concept_ | 
 
+### Requirements
+
+* A machine with a scheduler that can run Python and 24/7 availability
+* Access to a Gmail account for sending emails
+* Google Cloud credentials from [email-forwarding-validator](https://github.com/masonpimentel/email-forwarding-validator)
+
 ### Set up Python Application
 
 This section describes how to set up your environment to run the Python application, including pulling the code, installing necessary tools and dependencies, getting your API token and configuring the app. 
@@ -17,13 +23,13 @@ This section describes how to set up your environment to run the Python applicat
 Make sure you're in the directory where you want to run the Python application and Cronjob from. The rest of these steps will denote the current directory by `<path>`
 
 ```
-$ git clone https://github.com/masonpimentel/my-ip-address.git
+$ git clone https://github.com/masonpimentel/my-ip.git
 ```
 
 Alternatively, if you want to use SSH:
 
 ```
-$ git clone git@github.com:masonpimentel/my-ip-address.git
+$ git clone git@github.com:masonpimentel/my-ip.git
 ```
 
 #### Install relevant tools
@@ -36,7 +42,7 @@ The steps you take to install Python largely depends on the OS or distribution y
 
 https://docs.python-guide.org/starting/install3/linux/
 
-If you decided to go with Ubuntu 18.04 server, Python 3 is already installed but pip can be installed using the following:
+If you happen to be using Ubuntu 18.04 server, Python 3 is already installed but pip can be installed using the following:
 
 ```
 $ sudo apt-get install python3-pip
@@ -49,7 +55,7 @@ $ python3 -V
 Python 3.6.5
 ```
 
-Note that for the particular Ubuntu server version `python3` is used to invoke Python 3, `python` runs Python 2. Similarly for pip, `pip3` is used to invoke the package manager for Python 3.
+Note that for for Ubuntu 18.04 server, `python3` is used to invoke Python 3, `python` runs Python 2. Similarly for pip, `pip3` is used to invoke the package manager for Python 3.
 
 Check that `pip3` is set up correctly:
 
@@ -137,7 +143,4 @@ To debug the output of the cronjob, you can use the following, which will pipe s
 
 ---
 
-[Email Open icon](https://icons8.com/icons/set/email-open") icon by [Icons8]("https://icons8.com")
-[Internet icon]("https://icons8.com/icons/set/internet") icon by [Icons8]("https://icons8.com")
-[Server icon]("https://icons8.com/icons/set/server") icon by [Icons8]("https://icons8.com")
-[Service icon]("https://icons8.com/icons/set/service") icon by [Icons8]("https://icons8.com")
+[Email Open icon](https://icons8.com/icons/set/email-open) icon by [Icons8](https://icons8.com) | [Internet icon](https://icons8.com/icons/set/internet) icon by [Icons8](https://icons8.com) | [Server icon](https://icons8.com/icons/set/server) icon by [Icons8](https://icons8.com) | [Service icon](https://icons8.com/icons/set/service) icon by [Icons8](https://icons8.com)
