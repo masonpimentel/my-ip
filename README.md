@@ -4,6 +4,10 @@ This application will send your server's current external IP address to an email
 
 The purpose of this is to serve as an alternative to DDNS clients.
 
+![](assets/my-ip.png) |
+------------ | 
+_Concept_ | 
+
 ### Set up Python Application
 
 This section describes how to set up your environment to run the Python application, including pulling the code, installing necessary tools and dependencies, getting your API token and configuring the app. 
@@ -130,3 +134,10 @@ To debug the output of the cronjob, you can use the following, which will pipe s
 ```
 <minute> <hour> * * * <path>/my-ip/python3 send-ip.py >> <path>/my-ip/log.txt 2>&1
 ```
+
+---
+
+[Email Open icon](https://icons8.com/icons/set/email-open") icon by [Icons8]("https://icons8.com")
+[Internet icon]("https://icons8.com/icons/set/internet") icon by [Icons8]("https://icons8.com")
+[Server icon]("https://icons8.com/icons/set/server") icon by [Icons8]("https://icons8.com")
+[Service icon]("https://icons8.com/icons/set/service") icon by [Icons8]("https://icons8.com")
