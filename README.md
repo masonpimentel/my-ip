@@ -1,6 +1,6 @@
 ## My IP Address
 
-This application will send your server's current external IP address to an email address using 3 services (for redundancy): `ip4only.me`, `myip.com`, `ipify.org`.
+This application will send your server's current external IP address to an email address using 3 services (for redundancy) `ip4only.me`, `myip.com`, `ipify.org`.
 
 The purpose of this is to serve as an alternative to DDNS clients.
 
@@ -100,7 +100,11 @@ If for any reason you need to clear your configuration, just delete `token.json`
 
 ### Using the App
 
-This section describes how to manually execute the app (the last section explains how to set it up to run automatically) and view the execution logs.
+This section describes how to manually execute the app (the last section explains how to set it up to run automatically).
+
+### Complete configuration JSON
+
+Open `config.json` and fill in the missing values in `from_email` and `target_email`. `target_email` is the email address that will receive the emails. 
 
 #### Running for the First Time
 
@@ -112,19 +116,28 @@ $ python3 send-ip.py
 
 ### Scheduling Runs Using Cron
 
+First, find where your python executable is located:
+
+```
+which python3
+/usr/bin/python3
+```
+
 To open the [crontab](http://man7.org/linux/man-pages/man5/crontab.5.html) run:
 
 ```
 $ crontab -e
 ```
 
-This should open the file in your preferred editor. On a fresh Ubuntu instance it will let you choose which editor you want to use - if you're not sure, enter "2". You want to enter the following at the end of the file, replacing `<path>` according to the actual path where you cloned the repository:
+This should open the file in your preferred editor. Add the following line:
 
 ```
-0 */1 * * * <path>/my-ip/python3 send-ip.py
+0 */1 * * * cd <path to my-ip> && <python path> send-ip.py
 ```
 
-If you're not sure what's happening at this point, you're in the [vim](https://coderwall.com/p/adv71w/basic-vim-commands-for-getting-started) editor. Just press "j" until your cursor reaches the bottom, "o" to start editing, then copy+paste the above if your shell terminal allows it, otherwise enter it in manually. Then press ESC to exit editor mode, ":" (colon), "wq" then ENTER to save and exit. 
+Ex: 
+
+`0 */1 * * * cd /home/masonpimentel/my-ip && /usr/bin/python3 send-ip.py`
 
 ![](assets/screen2.png) |
 ------------ | 
@@ -138,8 +151,12 @@ This will run the script hourly, as denoted by the `0` in the minutes column, an
 To debug the output of the cronjob, you can use the following, which will pipe stdout and stderr to a text file:
 
 ```
-<minute> <hour> * * * <path>/my-ip/python3 send-ip.py >> <path>/my-ip/log.txt 2>&1
+<minute> <hour> * * * cd <path to my-ip> && <python path> send-ip.py >> <path>/log.txt 2>&1
 ```
+
+Ex: 
+
+`0 */1 * * * cd /home/masonpimentel/my-ip && /usr/bin/python3 send-ip.py >> /home/masonpimentel/log.txt 2>&1`
 
 ---
 
