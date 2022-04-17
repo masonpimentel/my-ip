@@ -4,7 +4,7 @@ This application will send your server's current external IP address to an email
 
 The purpose of this is to serve as an alternative to DDNS clients.
 
-![](assets/my-ip.png) |
+![](assets/my-ip-2.png) |
 ------------ | 
 _Concept_ | 
 
