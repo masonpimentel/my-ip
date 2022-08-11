@@ -66,7 +66,6 @@ def main():
     except:
         msg += "local failed"
 
-
     email_msg = EmailMessage()
     email_msg['From'] = get_config()["from_email"]
     email_msg['To'] = get_config()["target_email"]
