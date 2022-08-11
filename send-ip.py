@@ -2,6 +2,7 @@ from googleapiclient import errors
 import urllib.request
 import json
 import base64
+import socket
 from email.message import EmailMessage
 from oauth2client import file, client, tools
 from googleapiclient.discovery import build
@@ -30,6 +31,11 @@ def ipify():
     # '64.46.13.58'
     return res.decode()
 
+def localip():
+    s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+    s.connect(("8.8.8.8", 80))
+    return s.getsockname()[0]
+
 def main():
     msg = ""
     
@@ -53,6 +59,13 @@ def main():
     except:
         msg += "ipify failed"
         msg += "\n"
+
+    try:
+        msg += "\n"
+        msg += f"local: {localip()}"
+    except:
+        msg += "local failed"
+
 
     email_msg = EmailMessage()
     email_msg['From'] = get_config()["from_email"]
