@@ -1,5 +1,3 @@
 {
-    "from_email": "set email here",
-    "target_email": "set email here",
-    "email_subject": "Server IP Address"
+    "table_name": "my-ip"
 }
