@@ -33,7 +33,7 @@ def localip():
     return s.getsockname()[0]
 
 def main():
-    session = boto3.Session(profile_name="my-ip")
+    session = boto3.Session(profile_name=get_config()["profile_name"])
     dynamodb = session.resource("dynamodb")
     table = dynamodb.Table(get_config()["table_name"])
     table.put_item(

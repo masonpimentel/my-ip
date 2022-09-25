@@ -1,6 +1,6 @@
 ## My IP Address
 
-This application will send your server's current external IP address to an email address using 3 services (for redundancy) `ip4only.me`, `myip.com`, `ipify.org`.
+This application will send your server's current external IP address to AWS DynamoDB using 3 services (for redundancy) `ip4only.me`, `myip.com`, `ipify.org`.
 
 The purpose of this is to serve as an alternative to DDNS clients.
 
@@ -11,12 +11,11 @@ _Concept_ |
 ### Requirements
 
 * A machine with a scheduler that can run Python and 24/7 availability
-* Access to a Gmail account for sending emails
-* Google Cloud credentials from [email-forwarding-validator](https://github.com/masonpimentel/email-forwarding-validator)
+* An active AWS account
 
 ### Set up Python Application
 
-This section describes how to set up your environment to run the Python application, including pulling the code, installing necessary tools and dependencies, getting your API token and configuring the app. 
+This section describes how to set up your environment to run the Python application, including pulling the code, installing necessary tools and dependencies and configuring the app. 
 
 #### Clone repository
 
@@ -64,39 +63,71 @@ $ pip3 -V
 pip 9.0.1 from /usr/lib/python3/dist-packages (python 3.6)
 ```
 
-##### Google API client dependencies
+##### Boto
 
 Run the following:
 
-```
-$ pip3 install --upgrade google-api-python-client oauth2client
-```
-
-#### Add credentials
-
-Using the same credentials-send.json from [email-forwarding-validator](https://github.com/masonpimentel/email-forwarding-validator), copy and paste the contents into `<path>/my-ip/credentials.json` (replace the existing contents).
-
-#### Configure token
-
-We will now use our credentials to get our API token for sending requests to our projects.
-
-Run `config.py`:
+For more info on the Python AWS SDK: https://boto3.amazonaws.com/v1/documentation/api/latest/index.html
 
 ```
-$ python3 config.py --noauth_local_webserver
+$ pip3 install boto3
 ```
 
-Follow the link shown by entering it in any browser.
+#### Configure AWS
 
-![](assets/screen1.png) |
+You'll need to get your AWS access key and edit configuration files so that the app will have access to your Dynamo DB table, also set up the Dynamo table you want to write to.
+
+##### Get AWS credentials
+
+See here for more detailed info: https://docs.aws.amazon.com/general/latest/gr/aws-sec-cred-types.html
+
+These steps are based on AWS console's UI at this time of writing
+
+After logging into AWS console: https://aws.amazon.com/console/, go to IAM:
+
+![](assets/aws_1.png) |
 ------------ | 
-_Authenticating the app in a browser_ |
+_IAM_ |
 
-Copy the code and enter it in your command line window. This will set up your API token.
+Go to `users`, then click on the `Security credentials` tab:
 
-##### Clear configuration
+![](assets/aws_2.png) |
+------------ | 
+_Security credentials_ |
 
-If for any reason you need to clear your configuration, just delete `token.json`.
+Click on `Create access key` then go through the steps to retrieve your `aws_access_key_id` and `aws_secret_access_key`:
+
+![](assets/aws_3.png) |
+------------ | 
+_Create access key_ |
+
+##### Edit/create config files
+
+See here for more detailed info: https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-files.html
+
+Note that these steps assume the AWS profile `my-ip` is used. You can use a different profile name, just edit the `config.json` "profile_name"
+
+Adjust this command as needed (remove parts if you already have them) and run:
+```
+$ mkdir ~/.aws && touch ~/.aws/credentials && touch ~/.aws/config
+```
+
+Using your preferred editor, edit the files as the following:
+
+credentials
+```
+[my-ip]
+aws_access_key_id=<put aws_access_key_id here>
+aws_secret_access_key=<put aws_secret_access_key here>
+```
+
+Note: see here for other available AWS regions: https://aws.amazon.com/about-aws/global-infrastructure/regions_az/
+
+config
+```
+[profile my-ip]
+region=us-west-2
+```
 
 ### Using the App
 
@@ -139,7 +170,7 @@ Ex:
 
 `0 */1 * * * cd /home/masonpimentel/my-ip && /usr/bin/python3 send-ip.py`
 
-![](assets/screen2.png) |
+![](assets/setup_cron.png) |
 ------------ | 
 _Editing the crontab_ |
 
