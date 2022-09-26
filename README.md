@@ -1,10 +1,10 @@
 ## My IP Address
 
-This application will send your server's current external IP address to AWS DynamoDB using 3 services (for redundancy) `ip4only.me`, `myip.com`, `ipify.org`.
+This application will send your server's current external and internal (local) IP address to AWS DynamoDB using 3 services (for redundancy) `ip4only.me`, `myip.com`, `ipify.org`.
 
 The purpose of this is to serve as an alternative to DDNS clients.
 
-![](assets/my-ip-2.png) |
+![](assets/my-ip-3.png) |
 ------------ | 
 _Concept_ | 
 
@@ -13,7 +13,7 @@ _Concept_ |
 * A machine with a scheduler that can run Python and 24/7 availability
 * An active AWS account
 
-### Set up Python Application
+### Set up Python application
 
 This section describes how to set up your environment to run the Python application, including pulling the code, installing necessary tools and dependencies and configuring the app. 
 
@@ -129,15 +129,29 @@ config
 region=us-west-2
 ```
 
+##### Create a DynamoDB table
+
+You'll need to create a table in DynamoDB where the IP addresses will be written to. By default, the name `my-ip` is used, but like the AWS profile this can be changed and configured in `config.json` "table_name".
+
+First open Dynamo in AWS:
+
+![](assets/aws_4.png) |
+------------ | 
+_DynamoDB_ |
+
+Click on `Create table`. The most important fields are `Table name` and `Partition key`. For the default config, `Table name` should be `my-ip` (can be changed and configured in `config.json` "table_name"). `Partition key` should be `id` (this isn't configurable, but the code can be adjusted):
+
+![](assets/aws_5.png) |
+------------ | 
+_Create table_ |
+
+All the other settings can be left as default, or customized to your liking. Click on `Create table`.
+
 ### Using the App
 
 This section describes how to manually execute the app (the last section explains how to set it up to run automatically).
 
-### Complete configuration JSON
-
-Open `config.json` and fill in the missing values in `from_email` and `target_email`. `target_email` is the email address that will receive the emails. 
-
-#### Running for the First Time
+#### Running for the first time
 
 You can make a manual run by running:
 
